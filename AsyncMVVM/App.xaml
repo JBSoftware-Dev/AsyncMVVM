@@ -1,0 +1,11 @@
+﻿<Application
+    x:Class="AsyncMVVM.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewmodel="using:AsyncMVVM.ViewModel"
+    xmlns:converter="using:AsyncMVVM.Converter">
+    <Application.Resources>
+        <viewmodel:ViewModelLocator x:Key="Locator"/>
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,45 @@
+﻿<Page
+    x:Class="AsyncMVVM.View.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:interactivitycore="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:viewmodel="using:AsyncMVVM.ViewModel"
+    xmlns:model="using:AsyncMVVM.Model"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=viewmodel:MainViewModel}"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    DataContext="{Binding Main, Source={StaticResource Locator}}">
+    <interactivity:Interaction.Behaviors>
+        <interactivitycore:EventTriggerBehavior EventName="Loaded">
+            <interactivitycore:InvokeCommandAction Command="{Binding RefreshCommand}"/>
+        </interactivitycore:EventTriggerBehavior>
+    </interactivity:Interaction.Behaviors>
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button Content="Refresh" Command="{Binding RefreshCommand}"
+                    IsEnabled="{Binding IsListRefreshing, Converter={StaticResource InverseBooleanConverter}, FallbackValue=True}"/>
+            <ListView Grid.Row="2" ItemsSource="{Binding Posts}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:Name="PostDataTemplate" x:DataType="model:Post">
+                        <StackPanel Padding="20">
+                            <TextBlock Text="{Binding Title, Mode=OneWay}" Style="{ThemeResource BaseTextBlockStyle}"
+                                       Margin="0,4,0,0"/>
+                            <TextBlock Text="{Binding Content, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}"
+                                       Opacity=".8" Margin="0,4,0,0"/>
+                            <TextBlock Text="{Binding PostDate, Mode=OneWay}" Style="{ThemeResource CaptionTextBlockStyle}"
+                                       Opacity=".6" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        <ProgressRing IsActive="{Binding IsListRefreshing}" Height="40" Width="40"/>
+    </Grid>
+</Page>
